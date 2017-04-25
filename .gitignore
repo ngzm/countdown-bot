@@ -1,0 +1,15 @@
+# for MAC
+.DS_Store
+Thumbs.db
+
+# bundler
+vendor
+.bundle
+
+# ruby
+.rbenv-version
+.rvmrc
+.ruby-version
+
+# This Application
+ngzm.yml
