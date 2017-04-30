@@ -32,7 +32,7 @@ class CountDown
     boring_days = (the_day - Date.today).to_i
 
     # Say to Twitter
-    message = "Hi! just #{boring_days} days left until the Special Day."
+    message = "Hi! just #{boring_days} days left to your Special Day."
     yield message
   end
 end
