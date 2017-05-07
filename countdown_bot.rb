@@ -1,19 +1,14 @@
 require 'twitter'
-require 'date'
 require 'yaml'
 
 # SayTwitter
 class Tweeter
-  def initialize(config)
-    @config = config
-  end
-
   def say(message)
     client = Twitter::REST::Client.new(
-      consumer_key:     @config['tweet']['consumer_key'],
-      consumer_secret:  @config['tweet']['consumer_secret'],
-      access_token:     @config['tweet']['access_token'],
-      access_token_secret: @config['tweet']['access_token_secret']
+      consumer_key:     CONFIG['tweet']['consumer_key'],
+      consumer_secret:  CONFIG['tweet']['consumer_secret'],
+      access_token:     CONFIG['tweet']['access_token'],
+      access_token_secret: CONFIG['tweet']['access_token_secret']
     )
     client.update message
   end
@@ -21,30 +16,26 @@ end
 
 # Countdown Class
 class CountDown
-  def initialize(config)
-    @config = config
-  end
-
   def post
-    the_day = Date.new(@config['theday']['year'],
-                       @config['theday']['month'],
-                       @config['theday']['day'])
-    boring_days = (the_day - Date.today).to_i
+    boring_days = (Date.new(CONFIG['theday']['year'],
+                            CONFIG['theday']['month'],
+                            CONFIG['theday']['day']) - Date.today).to_i
+    htag = CONFIG['hushtags'].sample
 
     # Say to Twitter
-    message = "Hi! just #{boring_days} days left to your Special Day."
+    message = "Just #{boring_days} days left to my Special Day. ##{htag}"
     yield message
   end
 end
 
 # Load CONFIG FILE
-CONFIG_FILE = 'countdown_bot.yml'.freeze
-config = YAML.load_file(CONFIG_FILE)
+CONFIG = YAML.load_file('countdown_bot.yml')
 
-countdown = CountDown.new(config)
-tweet = Tweeter.new(config)
+countdown = CountDown.new
+tweet = Tweeter.new
 
 # Tweet Count Down Message
 countdown.post do |message|
   tweet.say message
+  # puts message
 end
