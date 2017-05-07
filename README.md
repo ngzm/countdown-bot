@@ -8,6 +8,8 @@ This program works on Docker continer.
 
 ```shell
 # git clone https://github.com/ngzm/countdown-bot.git
+
+# cd countdown-bot
 ```
 
 #### 2) Set your Twitter App information to countdown_bot.yml
@@ -23,8 +25,6 @@ tweet:
 #### 3) build the docker image
 
 ```shell
-# cd countdown-bot
-
 # docker build -t [image_name] .
 ```
 
