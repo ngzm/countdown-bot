@@ -20,11 +20,22 @@ class CountDown
     boring_days = (Date.new(CONFIG['theday']['year'],
                             CONFIG['theday']['month'],
                             CONFIG['theday']['day']) - Date.today).to_i
+    # Say to Twitter
+    yield what_i_say(boring_days)
+  end
+
+  def what_i_say(boring_days)
     htag = CONFIG['hushtags'].sample
 
-    # Say to Twitter
-    message = "Just #{boring_days} days left to my Special Day. ##{htag}"
-    yield message
+    if boring_days <= 30
+      "T minus #{boring_days} days. ##{htag}"
+    elsif (boring_days % 10).zero?
+      "Just #{boring_days} days left to my hope. ##{htag}"
+    elsif boring_days.odd?
+      "Start it in #{boring_days} days. ##{htag}"
+    else
+      "#{boring_days} days left. Keep going. ##{htag}"
+    end
   end
 end
 
@@ -37,5 +48,4 @@ tweet = Tweeter.new
 # Tweet Count Down Message
 countdown.post do |message|
   tweet.say message
-  # puts message
 end
